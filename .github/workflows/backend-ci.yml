@@ -40,7 +40,13 @@ jobs:
         run: |
           podman push ${{ secrets.DOCKER_USERNAME }}/backend-image  # Push the Docker image to Docker Hub or another registry
 
-      # 7. Deploy to Kubernetes (Minikube)
+      # 7. Set up Kubernetes credentials using the kubeconfig from GitHub secrets
+      - name: Set up Kubernetes
+        run: |
+          echo "${{ secrets.KUBE_CONFIG }}" > kubeconfig.yaml  # Write the kubeconfig content to a file
+          export KUBECONFIG=kubeconfig.yaml  # Set the KUBECONFIG environment variable
+
+      # 8. Deploy to Kubernetes (Minikube)
       - name: Deploy to Kubernetes
         run: |
           kubectl apply -f k8s/backend-deployment.yaml   # Apply the backend deployment YAML
