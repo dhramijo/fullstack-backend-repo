@@ -10,28 +10,39 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+      # 1. Checkout the code
       - name: Checkout Code
         uses: actions/checkout@v2
 
+      # 2. Set up JDK 17 using Temurin distribution
       - name: Set up JDK 17
         uses: actions/setup-java@v2
         with:
-          distribution: 'temurin'   # Corrected distribution name
-          java-version: '17'         # Specify the Java version you need (e.g., 17)
+          distribution: 'temurin'  # Temurin is the correct distribution name
+          java-version: '17'       # Specify Java version 17
 
+      # 3. Build the backend project with Maven
       - name: Build with Maven
-        run: mvn clean install
+        run: mvn clean install  # Build the backend project with Maven
 
-      - name: Build Docker image
+      # 4. Build Docker image using Podman
+      - name: Build Docker image with Podman
         run: |
-          podman build -t backend-image .
+          podman build -t backend-image .  # Build the Docker image locally using Podman
 
-      - name: Push Docker image
+      # 5. Log into Docker registry (Docker Hub) using Podman
+      - name: Podman Login to Docker Hub
         run: |
-          podman push backend-image
+          podman login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD }} # Log into Docker Hub using Podman
 
+      # 6. Push Docker image to Docker registry (using Podman)
+      - name: Push Docker image with Podman
+        run: |
+          podman push backend-image  # Push the Docker image to Docker Hub or another registry
+
+      # 7. Deploy to Kubernetes (Minikube)
       - name: Deploy to Kubernetes
         run: |
-          kubectl apply -f k8s/backend-deployment.yaml
-          kubectl apply -f k8s/backend-service.yaml
-          kubectl apply -f k8s/backend-ingress.yaml
+          kubectl apply -f k8s/backend-deployment.yaml   # Apply the backend deployment YAML
+          kubectl apply -f k8s/backend-service.yaml      # Apply the backend service YAML
+          kubectl apply -f k8s/backend-ingress.yaml      # Apply the backend ingress YAML
