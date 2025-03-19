@@ -33,12 +33,12 @@ jobs:
       # 5. Log into Docker registry (Docker Hub) using Podman
       - name: Podman Login to Docker Hub
         run: |
-          podman login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD }} # Log into Docker Hub using Podman
+          podman login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD }}  # Log into Docker Hub using Podman
 
       # 6. Push Docker image to Docker registry (using Podman)
       - name: Push Docker image with Podman
         run: |
-          podman push backend-image  # Push the Docker image to Docker Hub or another registry
+          podman push docker.io/${{ secrets.DOCKER_USERNAME }}/backend-image  # Push the Docker image to Docker Hub
 
       # 7. Deploy to Kubernetes (Minikube)
       - name: Deploy to Kubernetes
