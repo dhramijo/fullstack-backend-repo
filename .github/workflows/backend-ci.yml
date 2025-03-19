@@ -25,37 +25,26 @@ jobs:
       - name: Build with Maven
         run: |
           mvn clean install
-        working-directory: "." # Ensure quotes if the path contains spaces
+        working-directory: "."
 
       # 4. Build Docker image using Podman
       - name: Build Docker image with Podman
         run: |
-          podman build -t backend-image:latest .  # Use a local tag for Minikube
+          podman build -t backend-image:latest .
         working-directory: "."
 
-      # 5. Load Docker image into Minikube
-      - name: Load Docker image into Minikube
+      # 5. Load image into Minikube
+      - name: Load Image into Minikube
         run: |
-          minikube image load backend-image:latest  # Load image directly into Minikube
+          minikube image load backend-image:latest  # Required for Minikube with Podman
 
-      # 6. Log into Docker registry (Docker Hub) using Podman
-      - name: Podman Login to Docker Hub
-        run: |
-          podman login docker.io -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD }}
-
-      # 7. Push Docker image to Docker registry (using Podman)
-      - name: Push Docker image with Podman
-        run: |
-          podman tag backend-image:latest ${{ secrets.DOCKER_USERNAME }}/backend-image:latest
-          podman push ${{ secrets.DOCKER_USERNAME }}/backend-image:latest
-
-      # 8. Set up Kubernetes credentials using kubeconfig
+      # 6. Set up Kubernetes credentials using kubeconfig
       - name: Set up Kubernetes
         run: |
           echo "${{ secrets.KUBE_CONFIG }}" > kubeconfig.yaml
           export KUBECONFIG=kubeconfig.yaml
 
-      # 9. Deploy to Kubernetes (Minikube)
+      # 7. Deploy to Kubernetes (Minikube)
       - name: Deploy to Kubernetes
         run: |
           kubectl apply -f k8s/backend-deployment.yaml
