@@ -25,13 +25,13 @@ jobs:
       - name: Build with Maven
         run: |
           mvn clean install
-        working-directory: "./fullstack-backend-repo"  # Ensure quotes if the path contains spaces
+        working-directory: "."  # Ensure quotes if the path contains spaces
 
       # 4. Build Docker image using Podman
       - name: Build Docker image with Podman
         run: |
           podman build -t ${{ secrets.DOCKER_USERNAME }}/backend-image .  # Use your Docker username for tagging
-        working-directory: "./fullstack-backend-repo"  # Ensure quotes if the path contains spaces
+        working-directory: "."  # Ensure quotes if the path contains spaces
 
       # 5. Log into Docker registry (Docker Hub) using Podman
       - name: Podman Login to Docker Hub
