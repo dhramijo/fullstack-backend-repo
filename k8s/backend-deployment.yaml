@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
         - name: backend
-          image: backend-image
+          image: ${{ secrets.DOCKER_USERNAME }}/backend-image  # Use the full image name with Docker username
           ports:
             - containerPort: 8080
           resources:

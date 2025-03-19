@@ -10,7 +10,7 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      # 1. Checkout the code
+      # 1. Checkout the code from the repository
       - name: Checkout Code
         uses: actions/checkout@v2
 
@@ -28,17 +28,17 @@ jobs:
       # 4. Build Docker image using Podman
       - name: Build Docker image with Podman
         run: |
-          podman build -t backend-image .  # Build the Docker image locally using Podman
+          podman build -t ${{ secrets.DOCKER_USERNAME }}/backend-image .  # Use your Docker username for tagging
 
       # 5. Log into Docker registry (Docker Hub) using Podman
       - name: Podman Login to Docker Hub
         run: |
-          podman login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD }}  # Log into Docker Hub using Podman
+          podman login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD }} # Authenticate with Docker Hub
 
       # 6. Push Docker image to Docker registry (using Podman)
       - name: Push Docker image with Podman
         run: |
-          podman push docker.io/${{ secrets.DOCKER_USERNAME }}/backend-image  # Push the Docker image to Docker Hub
+          podman push ${{ secrets.DOCKER_USERNAME }}/backend-image  # Push the Docker image to Docker Hub or another registry
 
       # 7. Deploy to Kubernetes (Minikube)
       - name: Deploy to Kubernetes
