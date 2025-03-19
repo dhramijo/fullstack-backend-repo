@@ -14,13 +14,14 @@ spec:
     spec:
       containers:
         - name: backend
-          image: ${{ secrets.DOCKER_USERNAME }}/backend-image  # Use the full image name with Docker username
+          image: ${{ secrets.DOCKER_USERNAME }}/backend-image:latest  # Ensure the ":latest" tag is specified
+          imagePullPolicy: IfNotPresent   # Prevents re-pulling from Docker Hub if the image is already loaded in Minikube
           ports:
             - containerPort: 8080
           resources:
-            requests:     # Minimum resources the container is guaranteed
+            requests:
               memory: "512Mi"
               cpu: "250m"
-            limits:       # Maximum resources the container can use
+            limits:
               memory: "1Gi"
               cpu: "500m"
