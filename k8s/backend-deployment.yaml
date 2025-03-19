@@ -14,8 +14,8 @@ spec:
     spec:
       containers:
         - name: backend
-          image: ${{ secrets.DOCKER_USERNAME }}/backend-image:latest  # Ensure the ":latest" tag is specified
-          imagePullPolicy: IfNotPresent   # Prevents re-pulling from Docker Hub if the image is already loaded in Minikube
+          image: backend-image:latest  # Reference the locally loaded Minikube image
+          imagePullPolicy: IfNotPresent  # Prioritize local image cache
           ports:
             - containerPort: 8080
           resources:
