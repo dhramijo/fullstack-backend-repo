@@ -24,13 +24,13 @@ jobs:
       # 3. Build the backend project with Maven
       - name: Build with Maven
         run: mvn clean install
-        working-directory: backend  # Change this to the correct relative directory of your backend project
+        working-directory: .  # This should be the root of your repository, or adjust if needed
 
       # 4. Build Docker image using Podman
       - name: Build Docker image with Podman
         run: |
           podman build -t ${{ secrets.DOCKER_USERNAME }}/backend-image .  # Use your Docker username for tagging
-        working-directory: ./backend  # Change this to the correct relative directory of your backend project
+        working-directory: .  # Ensure you're in the root directory for Docker build
 
       # 5. Log into Docker registry (Docker Hub) using Podman
       - name: Podman Login to Docker Hub
