@@ -1,0 +1,32 @@
+spring:
+  application:
+    name: backend
+
+  datasource:
+    url: jdbc:h2:mem:testdb;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE
+    driverClassName: org.h2.Driver
+    username: sa
+    password:
+
+  jpa:
+    database-platform: org.hibernate.dialect.H2Dialect
+    hibernate:
+      ddl-auto: none # Important: Liquibase manages schema changes now
+      implicit_naming_strategy: org.hibernate.boot.model.naming.ImplicitNamingStrategyLegacyJpaImpl
+      physical_naming_strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
+
+  h2:
+    console:
+      enabled: true
+      path: /h2-console # For easy access to the H2 console
+
+  liquibase:
+    change-log: classpath:db/config/db.changelog-master.xml
+    enabled: true
+    contexts: development
+    drop-first: false
+    clear-checksums: true # Correct syntax (previously clearCheckSums)
+
+logging:
+  level:
+    liquibase: DEBUG

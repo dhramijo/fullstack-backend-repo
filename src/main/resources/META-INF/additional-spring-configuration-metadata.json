@@ -1,0 +1,42 @@
+{"properties": [
+  {
+    "name": "spring.jpa.hibernate.globally_quoted_identifiers",
+    "type": "java.lang.String",
+    "description": "A description for 'spring.jpa.hibernate.globally_quoted_identifiers'"
+  },
+  {
+    "name": "spring.jpa.hibernate.physical_naming_strategy",
+    "type": "java.lang.String",
+    "description": "A description for 'spring.jpa.hibernate.physical_naming_strategy'"
+  },
+  {
+    "name": "spring.jpa.hibernate.implicit_naming_strategy",
+    "type": "java.lang.String",
+    "description": "A description for 'spring.jpa.hibernate.implicit_naming_strategy'"
+  },
+  {
+    "name": "spring.liquibase.username",
+    "type": "java.lang.String",
+    "description": "A description for 'spring.liquibase.username'"
+  },
+  {
+    "name": "spring.liquibase.clearCheckSums",
+    "type": "java.lang.String",
+    "description": "A description for 'spring.liquibase.clearCheckSums'"
+  },
+  {
+    "name": "spring.liquibase.databaseChangeLogLockTableName",
+    "type": "java.lang.String",
+    "description": "A description for 'spring.liquibase.databaseChangeLogLockTableName'"
+  },
+  {
+    "name": "spring.liquibase.databaseChangeLogTableName",
+    "type": "java.lang.String",
+    "description": "A description for 'spring.liquibase.databaseChangeLogTableName'"
+  },
+  {
+    "name": "spring.liquibase.log-level",
+    "type": "java.lang.String",
+    "description": "A description for 'spring.liquibase.log-level'"
+  }
+]}
