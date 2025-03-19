@@ -33,10 +33,10 @@ jobs:
           podman build -t ${{ secrets.DOCKER_USERNAME }}/backend-image .  # Use your Docker username for tagging
         working-directory: "."  # Ensure quotes if the path contains spaces
 
-      # 5. Log into Docker registry (Docker Hub) using Podman
+ # 5. Log into Docker registry (Docker Hub) using Podman
       - name: Podman Login to Docker Hub
         run: |
-          podman login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD }} # Authenticate with Docker Hub
+          podman login docker.io -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD }} # Authenticate with Docker Hub
 
       # 6. Push Docker image to Docker registry (using Podman)
       - name: Push Docker image with Podman
