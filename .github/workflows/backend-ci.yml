@@ -27,16 +27,18 @@ jobs:
           mvn clean install
         working-directory: "."
 
-      # 4. Build Docker Image with Podman
-      - name: Build Docker image with Podman
+      # 4. Start Podman Local Registry
+      - name: Start Podman Registry
         run: |
-          podman build -t localhost/backend-image:latest .
-        working-directory: "."
+          podman machine set --rootful
+          podman machine start
+          podman run -d -p 5000:5000 --name local-registry registry:2 || echo "Registry already running"
 
-      # 5. Load Image into Minikube
-      - name: Load Image into Minikube
+      # 5. Build and Push Image to Podman Registry
+      - name: Build and Push Image
         run: |
-          minikube image load localhost/backend-image:latest
+          podman build -t localhost:5000/backend-image:latest .
+          podman push localhost:5000/backend-image:latest
 
       # 6. Set up Kubernetes
       - name: Set up Kubernetes

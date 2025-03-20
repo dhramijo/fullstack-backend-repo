@@ -14,8 +14,8 @@ spec:
     spec:
       containers:
         - name: backend
-          image: localhost/backend-image:latest
-          imagePullPolicy: Never  # Force using the locally loaded image
+          image: localhost:5000/backend-image:latest
+          imagePullPolicy: Always  # Ensures Minikube pulls the latest version
           ports:
             - containerPort: 8080
           resources:
