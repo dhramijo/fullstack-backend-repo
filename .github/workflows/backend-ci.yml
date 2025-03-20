@@ -7,64 +7,44 @@ on:
 
 jobs:
   build:
-    runs-on: self-hosted # Use self-hosted runner
+    runs-on: self-hosted # Use the self-hosted runner
 
     steps:
-      # Step 1: Checkout Code
+      # 1. Checkout the code from the repository
       - name: Checkout Code
-        uses: actions/checkout@v4
+        uses: actions/checkout@v2
 
-      # Step 2: Set up JDK 17
+      # 2. Set up JDK 17 using Temurin distribution
       - name: Set up JDK 17
         uses: actions/setup-java@v2
         with:
           distribution: "temurin"
           java-version: "17"
 
-      # Step 3: Build the Backend with Maven
+      # 3. Build the backend project with Maven
       - name: Build with Maven
         run: |
           mvn clean install
         working-directory: "."
 
-      # Step 4: Ensure Podman Machine is Started
-      - name: Initialize and Start Podman Machine
-        run: |
-          if ! podman machine list | grep -q 'podman-machine-default'; then
-            echo "Initializing Podman machine..."
-            podman machine init --rootful || echo "Podman machine already initialized"
-          fi
-          podman machine start || echo "Podman machine already started"
-
-      # Step 5: Build Image with Podman
+      # 4. Build Docker image using Podman
       - name: Build Docker image with Podman
         run: |
-          podman build -t localhost:5000/backend-image:latest .
+          podman build -t backend-image:latest .
+        working-directory: "."
 
-      # Step 6: Save and Load Image for Minikube
-      - name: Save and Load Image for Minikube
+      # 5. Load image into Minikube
+      - name: Load Image into Minikube
         run: |
-          podman save localhost:5000/backend-image:latest -o backend-image.tar
-          minikube image load backend-image.tar
-
-      # Step 7: Set up Kubernetes
+          minikube image load backend-image:latest  # Required for Minikube with Podman
+      # 6. Set up Kubernetes credentials using kubeconfig
       - name: Set up Kubernetes
         run: |
           echo "${{ secrets.KUBE_CONFIG }}" > kubeconfig.yaml
           export KUBECONFIG=kubeconfig.yaml
-
-      # Step 8: Deploy to Kubernetes
+      # 7. Deploy to Kubernetes (Minikube)
       - name: Deploy to Kubernetes
         run: |
           kubectl apply -f k8s/backend-deployment.yaml
           kubectl apply -f k8s/backend-service.yaml
           kubectl apply -f k8s/backend-ingress.yaml
-
-      # Step 9: Restart Deployment
-      - name: Restart Backend Deployment
-        run: |
-          kubectl rollout restart deployment backend-deployment
-
-      # Step 10: Verify Deployment
-      - name: Verify Deployment
-        run: kubectl get pods
