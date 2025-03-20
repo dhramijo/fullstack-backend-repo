@@ -3,7 +3,7 @@ kind: Deployment
 metadata:
   name: backend-deployment
 spec:
-  replicas: 1
+  replicas: 2
   selector:
     matchLabels:
       app: backend
@@ -14,7 +14,8 @@ spec:
     spec:
       containers:
         - name: backend
-          image: localhost/backend-image:latest  # Correct format for Podman in Minikube
+          image: localhost/backend-image:latest
+          imagePullPolicy: Never  # Force using the locally loaded image
           ports:
             - containerPort: 8080
           resources:
