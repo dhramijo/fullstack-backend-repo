@@ -27,15 +27,15 @@ jobs:
           mvn clean install
         working-directory: "."
 
-      # Step 4: Ensure Minikube Cluster is Running
-      - name: Ensure Minikube Cluster is Running with Podman Driver
+      # Step 4: Ensure Minikube Cluster is Running with cri-o (instead of Podman)
+      - name: Ensure Minikube Cluster is Running with cri-o Driver
         run: |
-          minikube start --driver=podman
+          minikube start --driver=podman --container-runtime=cri-o
 
       # Step 5: Set Podman Environment for Minikube
       - name: Set Podman Environment for Minikube
         run: |
-          eval $(minikube -p minikube podman-env)
+          eval $(minikube -p minikube podman-env)  # This should work now with cri-o runtime
 
       # Step 6: Build Docker Image using Podman
       - name: Build Docker Image with Podman
