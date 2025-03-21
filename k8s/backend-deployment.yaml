@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
         - name: backend
-          image: backend-image:latest  # Reference the image directly if it's loaded into Minikube's local registry
+          image: localhost/backend-image:latest  # Reference the image directly if it's loaded into Minikube's local registry
           imagePullPolicy: IfNotPresent  # Ensures Minikube pulls the latest version if not present
           ports:
             - containerPort: 8080
