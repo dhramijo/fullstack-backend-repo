@@ -2,7 +2,6 @@ package com.jdreamer.backend.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-
 import springfox.documentation.builders.PathSelectors;
 import springfox.documentation.builders.RequestHandlerSelectors;
 import springfox.documentation.spi.DocumentationType;
@@ -16,6 +15,7 @@ public class SwaggerConfig {
                 .select()
                 .apis(RequestHandlerSelectors.basePackage("com.jdreamer.backend.controller"))
                 .paths(PathSelectors.any())
-                .build();
+                .build()
+                .pathMapping("/");  // Ensure the base URL is correctly set
     }
 }
