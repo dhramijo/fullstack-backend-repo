@@ -46,47 +46,42 @@ jobs:
         run: |
           podman save backend-image:latest -o backend-image.tar
 
-      # Step 7: Copy Image into Minikube
-      - name: Copy Image into Minikube
-        run: |
-          minikube cp backend-image.tar /tmp/
-
-      # Step 8: Ensure Minikube Cluster is Running
+      # Step 7: Ensure Minikube Cluster is Running
       - name: Ensure Minikube Cluster is Running
         run: |
           minikube start
 
-      # Step 9: Set Docker Environment for Minikube
+      # Step 8: Set Docker Environment for Minikube
       - name: Set Docker Environment for Minikube
         run: |
           eval $(minikube -p minikube docker-env)
 
-      # Step 10: Load Image into Minikube Docker
+      # Step 9: Load Image into Minikube Docker
       - name: Load Image into Minikube Docker
         run: |
           minikube ssh "docker load -i /tmp/backend-image.tar"
         env:
           MINIKUBE_HOME: /tmp
 
-      # Step 11: Set up Kubernetes
+      # Step 10: Set up Kubernetes
       - name: Set up Kubernetes
         run: |
           echo "${{ secrets.KUBE_CONFIG }}" > kubeconfig.yaml
           export KUBECONFIG=kubeconfig.yaml
 
-      # Step 12: Deploy to Kubernetes
+      # Step 11: Deploy to Kubernetes
       - name: Deploy to Kubernetes
         run: |
           kubectl apply -f k8s/backend-deployment.yaml
           kubectl apply -f k8s/backend-service.yaml
           kubectl apply -f k8s/backend-ingress.yaml
 
-      # Step 13: Restart Deployment
+      # Step 12: Restart Deployment
       - name: Restart Backend Deployment
         run: |
           kubectl rollout restart deployment backend-deployment
 
-      # Step 14: Verify Deployment
+      # Step 13: Verify Deployment
       - name: Verify Deployment
         run: |
           kubectl get pods --all-namespaces
