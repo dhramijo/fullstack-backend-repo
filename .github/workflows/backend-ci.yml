@@ -39,32 +39,39 @@ jobs:
       # Step 5: Build Image with Podman
       - name: Build Docker image with Podman
         run: |
-          podman build -t localhost:5000/backend-image:latest .
+          podman build -t backend-image:latest .
 
-      # Step 6: Save and Load Image for Minikube
-      - name: Save and Load Image for Minikube
+      # Step 6: Save Image for Minikube
+      - name: Save Image for Minikube
         run: |
-          podman save localhost:5000/backend-image:latest -o backend-image.tar
-          minikube image load backend-image.tar
+          podman save backend-image:latest -o backend-image.tar
 
-      # Step 7: Set up Kubernetes
+      # Step 7: Load Image into Minikube
+      - name: Load Image into Minikube
+        run: |
+          minikube ssh "docker load -i /tmp/backend-image.tar"
+        env:
+          MINIKUBE_HOME: /tmp
+
+      # Step 8: Set up Kubernetes
       - name: Set up Kubernetes
         run: |
           echo "${{ secrets.KUBE_CONFIG }}" > kubeconfig.yaml
           export KUBECONFIG=kubeconfig.yaml
 
-      # Step 8: Deploy to Kubernetes
+      # Step 9: Deploy to Kubernetes
       - name: Deploy to Kubernetes
         run: |
           kubectl apply -f k8s/backend-deployment.yaml
           kubectl apply -f k8s/backend-service.yaml
           kubectl apply -f k8s/backend-ingress.yaml
 
-      # Step 9: Restart Deployment
+      # Step 10: Restart Deployment
       - name: Restart Backend Deployment
         run: |
           kubectl rollout restart deployment backend-deployment
 
-      # Step 10: Verify Deployment
+      # Step 11: Verify Deployment
       - name: Verify Deployment
-        run: kubectl get pods
+        run: |
+          kubectl get pods --all-namespaces
