@@ -28,37 +28,37 @@ jobs:
         working-directory: "."
 
       # Step 4: Ensure Minikube Cluster is Running
-      - name: Ensure Minikube Cluster is Running
+      - name: Ensure Minikube Cluster is Running with Podman Driver
         run: |
-          minikube start --driver=docker
+          minikube start --driver=podman
 
-      # Step 5: Set Docker Environment for Minikube
-      - name: Set Docker Environment for Minikube
+      # Step 5: Set Podman Environment for Minikube
+      - name: Set Podman Environment for Minikube
         run: |
-          eval $(minikube -p minikube docker-env)
+          eval $(minikube -p minikube podman-env)
 
-      # Step 6: Build Docker Image
-      - name: Build Docker image
+      # Step 6: Build Docker Image using Podman
+      - name: Build Docker Image with Podman
         run: |
-          docker build -t backend-image:latest .
+          podman build -t backend-image:latest .
 
       # Step 7: Save Image for Minikube
       - name: Save Image for Minikube
         run: |
-          docker save backend-image:latest -o backend-image.tar
+          podman save backend-image:latest -o backend-image.tar
 
       # Step 8: Copy Image into Minikube
       - name: Copy Image into Minikube
         run: |
           minikube cp backend-image.tar /tmp/
 
-      # Step 9: Load Image into Minikube's Docker
-      - name: Load Image into Minikube's Docker
+      # Step 9: Load Image into Minikube's Podman
+      - name: Load Image into Minikube's Podman
         run: |
-          minikube ssh "docker load -i /tmp/backend-image.tar"
+          minikube ssh "podman load -i /tmp/backend-image.tar"
 
-      # Step 10: Set up Kubernetes
-      - name: Set up Kubernetes
+      # Step 10: Set up Kubernetes Config
+      - name: Set up Kubernetes Config
         run: |
           echo "${{ secrets.KUBE_CONFIG }}" > kubeconfig.yaml
           export KUBECONFIG=kubeconfig.yaml
