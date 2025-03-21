@@ -49,7 +49,7 @@ jobs:
       # Step 7: Ensure Minikube Cluster is Running
       - name: Ensure Minikube Cluster is Running
         run: |
-          minikube start
+          minikube start --driver=podman
 
       # Step 8: Set Docker Environment for Minikube
       - name: Set Docker Environment for Minikube
