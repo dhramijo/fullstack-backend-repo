@@ -46,10 +46,10 @@ jobs:
         run: |
           podman save backend-image:latest -o backend-image.tar
 
-      # Step 7: Ensure Minikube Cluster is Running with Podman driver
-      - name: Ensure Minikube Cluster is Running with Podman driver
+      # Step 7: Ensure Minikube Cluster is Running
+      - name: Ensure Minikube Cluster is Running
         run: |
-          minikube start --driver=podman
+          minikube start
 
       # Step 8: Set Docker Environment for Minikube
       - name: Set Docker Environment for Minikube
@@ -66,10 +66,10 @@ jobs:
         run: |
           minikube cp backend-image.tar /tmp/
 
-      # Step 11: Load Image into Minikube Docker
-      - name: Load Image into Minikube Docker
+      # Step 11: Load Image into Minikube's Podman (Not Docker)
+      - name: Load Image into Minikube's Podman
         run: |
-          minikube ssh "docker load -i /tmp/backend-image.tar"
+          minikube ssh "podman load -i /tmp/backend-image.tar"
         env:
           MINIKUBE_HOME: /tmp
 
