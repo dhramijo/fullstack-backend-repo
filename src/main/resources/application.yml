@@ -26,3 +26,7 @@ spring:
     contexts: development
     drop-first: false
     clear-checksums: true # Correct syntax (previously clearCheckSums)
+
+server:
+  address: 0.0.0.0 # Ensures Spring Boot listens on all interfaces
+  port: 8080 # Your backend is exposed on port 8080
