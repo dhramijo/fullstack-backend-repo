@@ -10,14 +10,14 @@ spec:
     - host: backend.local
       http:
         paths:
-          - path: /swagger-ui.html
+          - path: /swagger-ui/
             pathType: Prefix
             backend:
               service:
                 name: backend-service
                 port:
                   number: 8080
-          - path: /v2/api-docs
+          - path: /api/
             pathType: Prefix
             backend:
               service:
