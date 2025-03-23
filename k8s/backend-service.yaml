@@ -10,4 +10,4 @@ spec:
       port: 8080
       targetPort: 8080
       nodePort: 30000  # You can specify a port or let Kubernetes auto-assign it
-  type: ClusterIP
+  type: NodePort
